@@ -1,7 +1,7 @@
 import axios from "axios";
 //Axiox instance
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // change if deployed
+  baseURL: "https://traveltales-backend-4ziw.onrender.com/api", 
 });
 
 // Add a request interceptor to include token in headers
