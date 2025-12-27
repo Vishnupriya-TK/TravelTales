@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: "Rubik", sans-serif;
+  background: linear-gradient(360deg, #c2e9ef 0%, #ace5ff 50%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.rubik {
+  font-family: "Rubik", sans-serif;
+}
