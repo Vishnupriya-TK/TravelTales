@@ -38,15 +38,8 @@ const Home = () => {
   const handleLike = async (id) => {
     const uid = getUserIdFromToken();
     if (!uid) return navigate("/login");
-    try {
-      const res = await toggleLike(id);
-      // Update the local story with the response
-      setStories(prev => prev.map(s => s._id === id ? res.data : s));
-      addToast("Like updated", "success");
-    } catch (err) {
-      const msg = err.response?.data?.message || "Failed to like";
-      addToast(msg, "error");
-    }
+    await toggleLike(id);
+    search();
   };
 
   const handleDelete = async (id) => {

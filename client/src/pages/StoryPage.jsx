@@ -168,7 +168,7 @@ const StoryPage = () => {
         <div className="space-y-2 mt-2">
           {(story.comments||[]).map(c => {
             const commenterName = c.name || (c.user && c.user.name) || (typeof c.user === 'string' ? c.user : 'Unknown');
-            const isCommentOwner = (c.user && c.user._id ? c.user._id : c.user)?.toString() === currentUserId;
+            const isCommentOwner = (c.user && c.user._id ? c.user._id : c.user)?.toString() === (typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user')||'null')?.id);
             const isStoryOwner = isOwner;
             return (
               <div key={c._id} className="text-sm border p-2 rounded flex justify-between items-start">
