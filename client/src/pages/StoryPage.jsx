@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { fetchStory, toggleLike, addComment, deleteComment, removeLikeByOwner, updateStory, deleteStory, getUserIdFromToken } from "../api";
 import { useToast } from "../context/ToastContext";
 
 const StoryPage = () => {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const [story, setStory] = useState(null);
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(searchParams.get('edit') === 'true');
   const [comment, setComment] = useState("");
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -168,7 +169,7 @@ const StoryPage = () => {
         <div className="space-y-2 mt-2">
           {(story.comments||[]).map(c => {
             const commenterName = c.name || (c.user && c.user.name) || (typeof c.user === 'string' ? c.user : 'Unknown');
-            const isCommentOwner = (c.user && c.user._id ? c.user._id : c.user)?.toString() === (typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user')||'null')?.id);
+            const isCommentOwner = (c.user && c.user._id ? c.user._id : c.user)?.toString() === currentUserId;
             const isStoryOwner = isOwner;
             return (
               <div key={c._id} className="text-sm border p-2 rounded flex justify-between items-start">

@@ -189,7 +189,7 @@ const Dashboard = () => {
               onView={() => navigate(`/story/${story._id}`)}
               onLike={() => { }}
               onDelete={handleDelete}
-              onEdit={() => navigate(`/story/${story._id}`)}
+              onEdit={() => navigate(`/story/${story._id}?edit=true`)}
               currentUserId={userId}
             />
 
@@ -214,7 +214,7 @@ const Dashboard = () => {
 
             {/* Expanded Panel */}
             {expanded === story._id && (
-              <div className="mt-3 p-3 border rounded bg-white max-h-[300px] overflow-y-auto">
+              <div className="mt-3 p-3 border rounded bg-white max-h-75 overflow-y-auto">
                 <h4 className="font-semibold">Comments</h4>
 
                 <div className="space-y-2 mt-2">

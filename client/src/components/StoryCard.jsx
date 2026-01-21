@@ -32,10 +32,10 @@ const StoryCard = ({ story, onView, onLike, onDelete, onEdit, currentUserId }) =
             <div className="mt-2 flex gap-2 flex-wrap">
               {(story.tags || []).map((t, i) => <span key={i} className="bg-gray-100 px-2 py-1 rounded text-xs">{t}</span>)}
             </div>
-            {/* Story description preview */}
+            {/* Story description */}
             {story.description && (
-              <p className="mt-2 text-sm text-gray-700 line-clamp-3">
-                {story.description.length > 100 ? `${story.description.substring(0, 100)}...` : story.description}
+              <p className="mt-2 text-sm text-gray-700">
+                {story.description}
               </p>
             )}
           </div>
@@ -45,7 +45,7 @@ const StoryCard = ({ story, onView, onLike, onDelete, onEdit, currentUserId }) =
             {!isOwner && (
               <button onClick={() => onLike(story._id)} className="text-pink-600 hover:opacity-80 transition">❤️ {story.likes?.length || 0}</button>
             )}
-            <button onClick={() => onView(story)} className="px-3 py-1 bg-sky-600 text-white rounded hover:bg-sky-700 transition">View</button>
+            <button onClick={onView} className="px-3 py-1 bg-sky-600 text-white rounded hover:bg-sky-700 transition">View</button>
             {/* Share uses navigator.clipboard or navigator.share fallback */}
             <button onClick={async () => {
               try {
@@ -61,7 +61,7 @@ const StoryCard = ({ story, onView, onLike, onDelete, onEdit, currentUserId }) =
           <div className="flex items-center gap-2">
             {isOwner && (
               <>
-                <button onClick={() => onEdit(story)} className="px-3 py-1 border rounded hover:bg-gray-50 transition">Edit</button>
+                <button onClick={onEdit} className="px-3 py-1 border rounded hover:bg-gray-50 transition">Edit</button>
                 <button onClick={() => onDelete(story._id)} className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition">Delete</button>
               </>
             )}
