@@ -27,3 +27,12 @@ mongoose.connect(process.env.MONGO_URI)
     );
   })
   .catch(err => console.error("MongoDB connection error:", err));
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});

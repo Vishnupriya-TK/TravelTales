@@ -32,6 +32,12 @@ const StoryCard = ({ story, onView, onLike, onDelete, onEdit, currentUserId }) =
             <div className="mt-2 flex gap-2 flex-wrap">
               {(story.tags || []).map((t, i) => <span key={i} className="bg-gray-100 px-2 py-1 rounded text-xs">{t}</span>)}
             </div>
+            {/* Story description preview */}
+            {story.description && (
+              <p className="mt-2 text-sm text-gray-700 line-clamp-3">
+                {story.description.length > 100 ? `${story.description.substring(0, 100)}...` : story.description}
+              </p>
+            )}
           </div>
         </div>
         <div className="mt-3 flex items-center justify-between">

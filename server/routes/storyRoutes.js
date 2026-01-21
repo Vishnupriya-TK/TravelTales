@@ -152,7 +152,7 @@ router.put("/like/:id", auth, async (req, res) => {
     if (!story)
       return res.status(404).json({ message: "Story not found" });
 
-    const index = story.likes.indexOf(req.userId);
+    const index = story.likes.findIndex(id => id.toString() === req.userId);
     index === -1 ? story.likes.push(req.userId) : story.likes.splice(index, 1);
 
     await story.save();
@@ -179,7 +179,7 @@ router.put("/:storyId/remove-like/:userId", auth, async (req, res) => {
       return res.status(403).json({ message: "Not authorized" });
 
     const userIdToRemove = req.params.userId;
-    const index = story.likes.indexOf(userIdToRemove);
+    const index = story.likes.findIndex(id => id.toString() === userIdToRemove);
 
     if (index === -1)
       return res.status(404).json({ message: "Like not found" });
@@ -233,7 +233,7 @@ router.delete("/comment/:storyId/:commentId", auth, async (req, res) => {
     if (!comment)
       return res.status(404).json({ message: "Comment not found" });
 
-    if (comment.user.toString() !== req.userId)
+    if (comment.user.toString() !== req.userId && story.user.toString() !== req.userId)
       return res.status(403).json({ message: "Not authorized" });
 
     story.comments.pull(req.params.commentId);
