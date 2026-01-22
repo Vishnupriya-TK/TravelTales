@@ -19,6 +19,9 @@ const StoryCard = ({ story, onView, onLike, onDelete, onEdit, currentUserId }) =
           <div>
             <h3 className="font-semibold text-lg">{story.title}</h3>
             <p className="text-sm text-gray-500">{story.location}</p>
+            {story.description && (
+              <p className="text-sm text-gray-700 mt-1 line-clamp-2">{story.description}</p>
+            )}
             {/* Show author name and email if available */}
             {story.user && (
               <div className="mt-1 flex items-center gap-2">
@@ -32,12 +35,6 @@ const StoryCard = ({ story, onView, onLike, onDelete, onEdit, currentUserId }) =
             <div className="mt-2 flex gap-2 flex-wrap">
               {(story.tags || []).map((t, i) => <span key={i} className="bg-gray-100 px-2 py-1 rounded text-xs">{t}</span>)}
             </div>
-            {/* Story description */}
-            {story.description && (
-              <p className="mt-2 text-sm text-gray-700">
-                {story.description}
-              </p>
-            )}
           </div>
         </div>
         <div className="mt-3 flex items-center justify-between">
@@ -45,7 +42,7 @@ const StoryCard = ({ story, onView, onLike, onDelete, onEdit, currentUserId }) =
             {!isOwner && (
               <button onClick={() => onLike(story._id)} className="text-pink-600 hover:opacity-80 transition">❤️ {story.likes?.length || 0}</button>
             )}
-            <button onClick={onView} className="px-3 py-1 bg-sky-600 text-white rounded hover:bg-sky-700 transition">View</button>
+            <button onClick={() => onView(story)} className="px-3 py-1 bg-sky-600 text-white rounded hover:bg-sky-700 transition">View</button>
             {/* Share uses navigator.clipboard or navigator.share fallback */}
             <button onClick={async () => {
               try {
@@ -61,7 +58,7 @@ const StoryCard = ({ story, onView, onLike, onDelete, onEdit, currentUserId }) =
           <div className="flex items-center gap-2">
             {isOwner && (
               <>
-                <button onClick={onEdit} className="px-3 py-1 border rounded hover:bg-gray-50 transition">Edit</button>
+                <button onClick={() => onEdit(story)} className="px-3 py-1 border rounded hover:bg-gray-50 transition">Edit</button>
                 <button onClick={() => onDelete(story._id)} className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition">Delete</button>
               </>
             )}

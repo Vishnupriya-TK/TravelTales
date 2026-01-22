@@ -77,7 +77,7 @@ const Home = () => {
                 ? tagFilter.filter(x => x !== t)
                 : [...tagFilter, t];
               setTagFilter(next);
-              load({ q: q || undefined, tags: next.length ? next.join(",") : undefined });
+              load({ tags: next.join(",") });
             }}
             className={`px-3 py-1 rounded ${
               tagFilter.includes(t)
@@ -96,9 +96,9 @@ const Home = () => {
             key={story._id}
             story={story}
             onView={() => navigate(`/story/${story._id}`)}
-            onEdit={() => navigate(`/story/${story._id}?edit=true`)}
             onLike={handleLike}
             onDelete={handleDelete}
+            onEdit={() => navigate(`/story/${story._id}?edit=true`)}
             currentUserId={getUserIdFromToken()}
           />
         ))}
