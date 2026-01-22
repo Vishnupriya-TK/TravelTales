@@ -214,7 +214,7 @@ const Dashboard = () => {
 
             {/* Expanded Panel */}
             {expanded === story._id && (
-              <div className="mt-3 p-3 border rounded bg-white max-h-75 overflow-y-auto">
+              <div className="mt-3 p-3 border rounded bg-white max-h-96 overflow-y-auto">
                 <h4 className="font-semibold">Comments</h4>
 
                 <div className="space-y-2 mt-2">

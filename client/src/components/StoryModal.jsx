@@ -1,5 +1,5 @@
 import  { useState } from "react";
-import { addComment, updateStory, getUserIdFromToken, deleteComment, removeLikeByOwner } from "../api";
+import { addComment, updateStory, getUserIdFromToken, deleteComment, removeLikeByOwner, fetchStory, deleteStory } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 
@@ -48,11 +48,18 @@ const StoryModal = ({ story: initial, onClose, onUpdated }) => {
   const handleDeleteComment = async (storyId, commentId) => {
     try {
       const res = await deleteComment(storyId, commentId);
-      setStory(res.data);
+      // Update story with the returned data
+      if (res.data && res.data._id) {
+        setStory(res.data);
+      } else {
+        // If response doesn't have data, fetch the story again
+        const storyRes = await fetchStory(storyId);
+        setStory(storyRes.data);
+      }
       addToast('Comment removed', 'success');
       onUpdated && onUpdated();
-    } catch {
-      addToast('Failed to remove comment', 'error');
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to remove comment', 'error');
     }
   };
 
@@ -63,6 +70,18 @@ const StoryModal = ({ story: initial, onClose, onUpdated }) => {
       addToast('Like removed', 'success');
       onUpdated && onUpdated();
     } catch { addToast('Failed to remove like', 'error'); }
+  };
+
+  const handleDeleteStory = async () => {
+    if (!confirm('Delete this story?')) return;
+    try {
+      await deleteStory(story._id);
+      addToast('Story deleted', 'success');
+      onClose();
+      onUpdated && onUpdated();
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to delete story', 'error');
+    }
   };
 
   return (
@@ -77,7 +96,9 @@ const StoryModal = ({ story: initial, onClose, onUpdated }) => {
               // Only show Edit button to story owner
               isStoryOwner ? <button onClick={() => setEditing(true)} className="px-3 py-1 border rounded">Edit</button> : null
             )}
-           
+            {isStoryOwner && !editing && (
+              <button onClick={handleDeleteStory} className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+            )}
             <button onClick={async () => {
               const url = `${window.location.origin}/story/${story._id}`;
               try {

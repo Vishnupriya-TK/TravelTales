@@ -20,19 +20,27 @@ export const AuthProvider = ({ children }) => {
   }, [user]);
 
   const login = async (form) => {
-    const res = await API.loginUser(form);
-    localStorage.setItem('token', res.data.token);
-    localStorage.setItem('user', JSON.stringify(res.data.user));
-    setUser(res.data.user);
-    return res;
+    try {
+      const res = await API.loginUser(form);
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      setUser(res.data.user);
+      return res;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const register = async (form) => {
-    const res = await API.registerUser(form);
-    localStorage.setItem('token', res.data.token);
-    localStorage.setItem('user', JSON.stringify(res.data.user));
-    setUser(res.data.user);
-    return res;
+    try {
+      const res = await API.registerUser(form);
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      setUser(res.data.user);
+      return res;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const logout = () => {

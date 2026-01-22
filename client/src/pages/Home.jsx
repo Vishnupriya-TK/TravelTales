@@ -1,13 +1,15 @@
 import { useEffect, useState, useMemo } from "react";
-import { fetchStories, toggleLike, deleteStory, getUserIdFromToken } from "../api";
+import { fetchStories, toggleLike, deleteStory, getUserIdFromToken, fetchStory } from "../api";
 import { useNavigate } from "react-router-dom";
 import StoryCard from "../components/StoryCard";
+import StoryModal from "../components/StoryModal";
 import { useToast } from "../context/ToastContext";
 
 const Home = () => {
   const [stories, setStories] = useState([]);
   const [q, setQ] = useState("");
   const [tagFilter, setTagFilter] = useState([]);
+  const [editingStory, setEditingStory] = useState(null);
   const navigate = useNavigate();
   const { addToast } = useToast();
 
@@ -44,9 +46,28 @@ const Home = () => {
 
   const handleDelete = async (id) => {
     if (!confirm("Delete story?")) return;
-    await deleteStory(id);
-    addToast("Deleted", "success");
-    search();
+    try {
+      await deleteStory(id);
+      addToast("Deleted", "success");
+      setEditingStory(null);
+      search();
+    } catch (err) {
+      addToast(err.response?.data?.message || "Failed to delete story", "error");
+    }
+  };
+
+  const handleEdit = async (story) => {
+    try {
+      // Fetch the full story data with all populated fields
+      const res = await fetchStory(story._id);
+      setEditingStory(res.data);
+    } catch (err) {
+      addToast(err.response?.data?.message || "Failed to load story", "error");
+    }
+  };
+
+  const handleStoryUpdated = () => {
+    search(); // Refresh the stories list
   };
 
   return (
@@ -98,11 +119,20 @@ const Home = () => {
             onView={() => navigate(`/story/${story._id}`)}
             onLike={handleLike}
             onDelete={handleDelete}
-            onEdit={() => navigate(`/story/${story._id}?edit=true`)}
+            onEdit={() => handleEdit(story)}
             currentUserId={getUserIdFromToken()}
           />
         ))}
       </div>
+
+      {/* Edit Modal */}
+      {editingStory && (
+        <StoryModal
+          story={editingStory}
+          onClose={() => setEditingStory(null)}
+          onUpdated={handleStoryUpdated}
+        />
+      )}
     </div>
   );
 };

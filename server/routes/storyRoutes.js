@@ -233,13 +233,23 @@ router.delete("/comment/:storyId/:commentId", auth, async (req, res) => {
     if (!comment)
       return res.status(404).json({ message: "Comment not found" });
 
-    if (comment.user.toString() !== req.userId)
+    // Allow comment owner OR story owner to delete
+    const isCommentOwner = comment.user.toString() === req.userId;
+    const isStoryOwner = story.user.toString() === req.userId;
+    
+    if (!isCommentOwner && !isStoryOwner)
       return res.status(403).json({ message: "Not authorized" });
 
     story.comments.pull(req.params.commentId);
     await story.save();
 
-    res.json({ message: "Comment deleted" });
+    // Return updated story with populated fields
+    const populated = await Story.findById(req.params.storyId)
+      .populate("user", "name email")
+      .populate("likes", "name email")
+      .populate("comments.user", "name");
+
+    res.json(populated);
   } catch (error) {
     res.status(500).json({ message: "Failed to delete comment" });
   }

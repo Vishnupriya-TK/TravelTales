@@ -64,10 +64,17 @@ const StoryPage = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      await deleteComment(story._id, commentId);
+      const res = await deleteComment(story._id, commentId);
+      // If response includes updated story, use it; otherwise refresh
+      if (res.data && res.data._id) {
+        setStory(res.data);
+      } else {
+        await refresh();
+      }
       addToast('Comment removed', 'success');
-      await refresh();
-    } catch { addToast('Failed to remove comment', 'error'); }
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to remove comment', 'error');
+    }
   };
 
   const handleRemoveLikeByOwner = async (userId) => {

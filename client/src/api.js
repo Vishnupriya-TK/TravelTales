@@ -1,5 +1,5 @@
 import axios from "axios";
-//Axiox instance
+//Axios instance
 const API = axios.create({
   baseURL: "http://localhost:5000/api", // change if deployed
 });

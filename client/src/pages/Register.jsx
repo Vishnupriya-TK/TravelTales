@@ -16,12 +16,12 @@ const Register = () => {
       addToast('Account created', 'success');
       navigate("/create");
     } catch (err) {
-      addToast(err.response?.data || "Registration failed", 'error');
+      addToast(err.response?.data?.message || "Registration failed", 'error');
     }
   };
 
   return (
-    <form onSubmit={submit} className="max-w-md mx-auto mt-35 p-6 space-y-4 bg-white shadow rounded">
+    <form onSubmit={submit} className="max-w-md mx-auto mt-8 p-6 space-y-4 bg-white shadow rounded">
       <h2 className="text-xl font-bold">Create account</h2>
       <input className="w-full p-3 border rounded" placeholder="Name" onChange={e => setForm({...form, name:e.target.value})} />
       <input className="w-full p-3 border rounded" placeholder="Email" onChange={e => setForm({...form, email:e.target.value})} />

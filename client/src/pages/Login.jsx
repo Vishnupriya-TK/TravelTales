@@ -16,12 +16,12 @@ const Login = () => {
       addToast('Logged in', 'success');
       navigate("/");
     } catch (err) {
-      addToast(err.response?.data || "Login failed", 'error');
+      addToast(err.response?.data?.message || "Login failed", 'error');
     }
   };
 
   return (
-    <form onSubmit={submit} className="max-w-md mt-35 mx-auto p-6 space-y-4 bg-white shadow rounded">
+    <form onSubmit={submit} className="max-w-md mt-8 mx-auto p-6 space-y-4 bg-white shadow rounded">
       <h2 className="text-xl font-bold">Welcome back</h2>
       <input className="w-full p-3 border rounded" placeholder="Email" onChange={e => setForm({...form, email:e.target.value})} />
       <input className="w-full p-3 border rounded" type="password" placeholder="Password"
