@@ -3,7 +3,7 @@
 
 **TravelTales** is a full-stack MERN web application that allows users to share their travel experiences through stories with images, explore stories shared by others, and interact using likes and comments. The platform focuses on secure authentication, smooth UI, and scalable backend architecture.
 
-🔗 **Live Demo**: [https://traveltales-frontend.onrender.com](https://traveltales-mgk9.onrender.com/)
+🔗 **Live Demo**: [Visit Here](https://traveltales-mgk9.onrender.com/)
 
 ---
 
@@ -178,4 +178,5 @@ npm run dev
 📬 Open to collaboration and feedback
 
 🌟 *“TravelTales turns journeys into stories and memories into experiences.”*
+
 
